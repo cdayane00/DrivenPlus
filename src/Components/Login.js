@@ -33,6 +33,8 @@ function Login(){
             setUsuario({...usuario,id: response.data.id, cpf: response.data.cpf, password: response.data.password, membership: response.data.membership,  email: response.data.email, name: response.data.name, token: response.data.token});
 
         });
+        console.log(usuario.token);
+        
         promise.catch(erro=> alert(erro.response.statusText));
         if(usuario.membership === null){
             navigate('/subscriptions'); 

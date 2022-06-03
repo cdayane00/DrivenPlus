@@ -13,12 +13,13 @@ function App(){
         ? JSON.parse(localStorage.getItem('userdata'))
         : null
     );
+    const [init, setInit] = useState(false);
     return(
-        <UserContext.Provider value={{usuario}}>
+        <UserContext.Provider value={{usuario, setUsuario}}>
             <Routes>
-                <Route path='/' element={<Login/>}/>
+                <Route path='/' element={<Login />}/>
                 <Route path='/sign-up' element={<Cadastro/>}/>
-                <Route path='/subscriptions' element={<Planos/>}/>
+                <Route path='/subscriptions' element={!init ? <Planos setInit={setInit}/> : <Plano/>}/>
                 <Route path='/subscriptions/:id' element={<Plano/>}/>
                 <Route path='/home' element={<Home/>}/>
             </Routes>
