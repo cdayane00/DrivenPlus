@@ -48,7 +48,7 @@ function Plano(){
             expirationDate: dadosAssina.expirationDate
         }, config);
         
-        promise.then(()=>{
+        promise.then((response)=>{
             console.log("sucesso");
             modal();
         });
@@ -57,6 +57,7 @@ function Plano(){
         console.log(dadosAssina.membershipId)
         console.log(usuario.token);
         promise.catch(erro=>alert(erro.response.statusText));
+        console.log(plano.name);
 
     }
 

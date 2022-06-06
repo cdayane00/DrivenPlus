@@ -14,7 +14,7 @@ function App(){
         : null
     );
     const [init, setInit] = useState(false);
-    const [plano, setPlano] = useState("");
+    const [plano, setPlano] = useState([]);
     return(
         <UserContext.Provider value={{usuario, setUsuario}}>
             <Routes>

@@ -61,8 +61,6 @@ const Plano = styled.div`
     p{
         margin-left: 270px;
     }
-    
-  
     `
 
 const Fundo = styled.div`
