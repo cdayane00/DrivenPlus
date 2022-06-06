@@ -5,6 +5,8 @@ import UserContext from '../context/UserContext';
 import axios from 'axios';
 import fechar from '../img/fechar.png'
 import voltar from '../img/voltar.png'
+import beneficios from '../img/beneficios.png'
+import preco from '../img/preco.png'
 
 function Plano(){
     const navigate = useNavigate();
@@ -52,6 +54,8 @@ function Plano(){
             console.log("sucesso");
             modal();
         });
+
+        
         
         console.log(dadosAssina.cardName)
         console.log(dadosAssina.membershipId)
@@ -100,8 +104,20 @@ function Plano(){
             
             <img key={`plano ${id}`} src={plano.image}/>
             <p>{plano.name}</p>
-            <h3>Benefícios:</h3>
-            <h3>Preço:</h3>
+            <div className='beneficios'>
+                <img src={beneficios}/>
+                <h3>Benefícios:</h3>    
+            </div>
+            
+            {plano.perks?.map(brinde =>
+                <ul>{brinde.id}. {brinde.title}</ul>
+            )}
+
+            <div className='beneficios'>
+                <img src={preco}/>
+                <h3>Preço:</h3>   
+            </div>
+            
             <h4>R$ {plano.price} cobrados mensalmente</h4>
             <CriaForm onSubmit={assinarPlano}>
                 <input type="text" placeholder='Nome impresso no cartão' value={dadosAssina.cardName} required onChange={e=> setDadosAssina({...dadosAssina, membershipId: id, cardName: e.target.value})}/>
@@ -109,7 +125,6 @@ function Plano(){
                 <input className='input-menor' type="text" placeholder='Código de segurança' value={dadosAssina.securityNumber} required onChange={e=> setDadosAssina({...dadosAssina, securityNumber: e.target.value})}/>
                 <input className='input-menor' type="date" placeholder='Validade' value={dadosAssina.expirationDate} required onChange={e=> setDadosAssina({...dadosAssina, expirationDate: e.target.value})}/>
                 <button type='submit'>Assinar</button>
-
             </CriaForm>
             
 
@@ -158,9 +173,30 @@ const CriaForm = styled.form`
 
 const Fundo = styled.div`
     width: 375px;
-    height: 667px;
+    height: 800px;
     background: black;
     
+    .beneficios{
+        display: flex;
+    }
+
+    .beneficios img{
+        width: 10px;
+        height: 15px;
+        margin-left: 40px;
+        margin-top:10px;
+    }
+
+    ul{
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        margin-top: 0;
+        margin-bottom:0;
+        color: #FFFFFF;
+    }
 
     .div-modal{
         width: 248px;
@@ -239,8 +275,8 @@ const Fundo = styled.div`
         color: #FFFFFF;
     }
     h3{
-        margin-left: 40px;
-        margin-top: 20px;
+        margin-left: 10px;
+        margin-top: 10px;
         font-family: 'Roboto';
         font-style: normal;
         font-weight: 400;

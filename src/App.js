@@ -16,7 +16,7 @@ function App(){
     const [init, setInit] = useState(false);
     const [plano, setPlano] = useState([]);
     return(
-        <UserContext.Provider value={{usuario, setUsuario}}>
+        <UserContext.Provider value={{usuario, setUsuario, plano, setPlano}}>
             <Routes>
                 <Route path='/' element={<Login />}/>
                 <Route path='/sign-up' element={<Cadastro/>}/>

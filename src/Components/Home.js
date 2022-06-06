@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useParams,useNavigate, Link } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import { useState, useEffect,useContext } from 'react';
 import UserContext from '../context/UserContext';
 import axios from 'axios';
@@ -8,24 +8,55 @@ import usuarioLogo from '../img/usuarioLogo.png'
 function Home(){
     
     const navigate = useNavigate();
-    const {usuario} = useContext(UserContext);
+    const {usuario,setUsuario} = useContext(UserContext);
     const [plano, setPlano] = useState([]);
     const [dadosAssina, setDadosAssina] = useState({membershipId:"", cardName:"", cardNumber:"", securityNumber:"", expirationDate:""});
 
     useEffect(()=>{
-        const URL = `https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions/memberships/${usuario.membership.id}`;
-        const config = {
-            headers: {
-                Authorization: `Bearer ${usuario.token}`,
-            },
-        };
-        const promise = axios.get(URL,config);
-        promise.then((response)=>{
-            setPlano(response.data);
-        });
-        promise.catch((erro)=>{
-            alert(erro.response.statusText);
-        });
+        if(usuario.membership !== null){
+            const URL = `https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions/memberships/${usuario.membership?.id}`;
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${usuario.token}`,
+                },
+            };
+            const promise = axios.get(URL,config);
+            promise.then((response)=>{
+                setPlano(response.data);
+            });
+            promise.catch((erro)=>{
+                alert(erro.response.statusText);
+            });
+        }
+        else{
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${usuario.token}`,
+                },
+            };
+            
+            const promise = axios.post(URL, {
+                membershipId: dadosAssina.membershipId,
+                cardName: dadosAssina.cardName,
+                cardNumber: dadosAssina.cardNumber,
+                securityNumber: dadosAssina.securityNumber,
+                expirationDate: dadosAssina.expirationDate
+            }, config);
+            
+            promise.then((response)=>{
+                localStorage.setItem("userdata", JSON.stringify({
+                    id: response.data.id,
+                    name: response.data.name,
+                    cpf: response.data.cpf,
+                    email: response.data.email,
+                    password: response.data.password,
+                    membership: response.data.membership,
+                    token: response.data.token
+                }));
+                console.log("sucesso");
+            });
+        }
+
     },[]);
 
     function cancelarPlano(){
@@ -39,55 +70,39 @@ function Home(){
         const promise = axios.delete(URL, config);
         
         promise.then((response)=>{
+            localStorage.setItem("userdata", JSON.stringify({
+                id: response.data.id,
+                name: response.data.name,
+                cpf: response.data.cpf,
+                email: response.data.email,
+                password: response.data.password,
+                membership: response.data.membership,
+                token: response.data.token
+            }));
             console.log("sucesso");
             navigate('/subscriptions')
         });
         
+        console.log(plano.name)
         promise.catch(erro=>alert(erro.response.statusText)); 
     }
 
-    // function atualizaPlano(event){
-    //     event.preventDefault();
-
-    //     const URL = "https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions";
-    //     const config = {
-    //         headers: {
-    //             Authorization: `Bearer ${usuario.token}`,
-    //         },
-    //     };
-        
-    //     const promise = axios.post(URL, {
-    //         membershipId: dadosAssina.membershipId,
-    //         cardName: dadosAssina.cardName,
-    //         cardNumber: dadosAssina.cardNumber,
-    //         securityNumber: dadosAssina.securityNumber,
-    //         expirationDate: dadosAssina.expirationDate
-    //     }, config);
-        
-    //     promise.then((response)=>{
-    //         console.log("sucesso");
-    //         navigate('/subscriptions')
-    //     });
-        
-    //     console.log(dadosAssina.cardName)
-    //     console.log(dadosAssina.membershipId)
-    //     console.log(usuario.token);
-    //     promise.catch(erro=>alert(erro.response.statusText));
-    //     console.log(plano.name);
-    // }
+    function atualizaPlano(){
+        navigate('/subscriptions');
+    }
     return(
         <Fundo>
             <Imagens>
-                <img key={`plano ${usuario.membership.id}`} src={plano.image}/>
+                <img key={`plano ${plano.id}`} src={plano.image}/>
                 <img className='logo' src={usuarioLogo}/>
             </Imagens>
             <p>Olá, {usuario.name}</p>
-            {usuario.membership.perks.map(brinde =>
+            {plano.perks?.map(brinde =>
                     <a href={brinde.link}>
                         <button>{brinde.title}</button>
                     </a>   
             )}
-            <button className='mudar'>Mudar plano</button>
+            <button onClick={atualizaPlano}  className='mudar'>Mudar plano</button>
             <button onClick={cancelarPlano} className='cancelar'>Cancelar plano</button>
         </Fundo>
     )

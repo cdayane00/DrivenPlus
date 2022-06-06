@@ -27,16 +27,17 @@ function Planos({setInit}){
         promise.catch((erro)=>{
             alert(erro.response.statusText);
         }) 
-    })
+    },[])
 
     function IdPlanos({id,image, price}){
         return(
-            <Link to={`/subscriptions/${id}`}>
-                <img onClick={()=>setInit(true)} key={`plano ${id}`} src={image}/>
-                <p>{price}</p>
+            <Link onClick={()=>setInit(true)} to={`/subscriptions/${id}`}>
+                <div className='planos'>
+                    <img key={`plano ${id}`} src={image}/>
+                    <p>R${price}</p>
+                </div>
             </Link>
         )
-
 
     }
     return(
@@ -58,8 +59,36 @@ const Plano = styled.div`
     height: 600px;
     margin-top: 30px;
 
-    p{
-        margin-left: 270px;
+    .planos{
+        display-flex;
+        width: 290px;
+        height: 180px;
+        margin-left: 43px;
+        margin-bottom:10px;
+        background: #0E0E13;
+        border: 3px solid #7E7E7E;
+        border-radius: 12px;
+        
+    }
+
+    .planos img{
+        margin-top: 45px;
+        margin-left: 20px;
+    }
+
+    .planos p{
+        width: 30px;
+        height: 20px;
+        margin-left: 180px;
+        margin-bottom: 100;
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 28px;
+        text-decoration-line: underline;
+        color: #FFFFFF;
+
     }
     `
 
@@ -67,7 +96,6 @@ const Fundo = styled.div`
     width: 375px;
     height: 667px;
     background: black;
-    text-align: center;
 
     div{
         height: 20px;
@@ -80,5 +108,6 @@ const Fundo = styled.div`
         font-size: 32px;
         line-height: 38px;
         color: #FFFFFF;
+        margin-left: 60px;
 
     }`;

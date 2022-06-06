@@ -36,7 +36,7 @@ function Login(){
         console.log(usuario.token);
         
         promise.catch(erro=> alert(erro.response.statusText));
-        if(usuario.membership === null){
+        if(usuario?.membership === null){
             navigate('/subscriptions'); 
         }
         else{
