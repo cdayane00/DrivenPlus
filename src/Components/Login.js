@@ -21,7 +21,11 @@ function Login(){
         });
 
         promise.then((response) => {
-            localStorage.setItem("userdata", JSON.stringify({
+            if(localStorage !== null){
+                navigate('/home')
+            }
+
+            else{localStorage.setItem("userdata", JSON.stringify({
                 id: response.data.id,
                 name: response.data.name,
                 cpf: response.data.cpf,
@@ -31,7 +35,7 @@ function Login(){
                 token: response.data.token
             }));
             setUsuario({...usuario,id: response.data.id, cpf: response.data.cpf, password: response.data.password, membership: response.data.membership,  email: response.data.email, name: response.data.name, token: response.data.token});
-
+            }
         });
         console.log(usuario.token);
         

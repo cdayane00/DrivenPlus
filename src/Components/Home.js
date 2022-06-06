@@ -29,6 +29,7 @@ function Home(){
             });
         }
         else{
+            const URL = `https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions/memberships`;
             const config = {
                 headers: {
                     Authorization: `Bearer ${usuario.token}`,
@@ -44,15 +45,6 @@ function Home(){
             }, config);
             
             promise.then((response)=>{
-                localStorage.setItem("userdata", JSON.stringify({
-                    id: response.data.id,
-                    name: response.data.name,
-                    cpf: response.data.cpf,
-                    email: response.data.email,
-                    password: response.data.password,
-                    membership: response.data.membership,
-                    token: response.data.token
-                }));
                 console.log("sucesso");
             });
         }
